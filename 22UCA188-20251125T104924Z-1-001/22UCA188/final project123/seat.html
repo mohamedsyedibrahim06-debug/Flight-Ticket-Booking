@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Seat Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-image: url('seat1.jpeg'); /* Replace with your image URL */
+            background-size: cover;
+            background-position: center;
+            color: white;
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* To ensure the background image covers the entire page */
+        }
+        header {
+          background-color: #0073e6; /* Sky blue */
+          background: url('head25.jpg') ;
+          color: rgb(0, 0, 0);
+          padding: 1.5rem;
+          text-align: left;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+          font-size: 1.8rem;
+          letter-spacing: 1px;
+        }
+        nav {
+          background-color: #003366; /* Deep blue (navy) */
+          overflow: hidden;
+          font-size: 1.1rem;
+        }
+    
+        nav a {
+          float: left;
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 16px 20px;
+          text-decoration: none;
+          font-weight: bold;
+          transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+        }
+    
+        nav a:hover {
+          background-color: #ffcc00; /* Yellow (airport caution vibe) */
+          color: #003366; /* Deep blue for contrast */
+          transform: scale(1.05);
+        }
+    
+        .seats-container {
+            display: grid;
+            grid-template-columns: repeat(4, 80px); /* Adjust column width for a better look */
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .seat {
+            width: 80px;
+            height: 80px;
+            background-color: lightgray;
+            border: 1px solid #000;
+            cursor: pointer;
+            text-align: center;
+            line-height: 80px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .seat.selected {
+            background-color: green;
+            color: white;
+            transform: scale(1.05);
+        }
+        .seat.occupied {
+            background-color: red;
+            cursor: not-allowed;
+        }
+        .empty {
+            background-color: transparent;
+            cursor: default;
+        }
+        h2, p {
+            margin-top: 50px;
+            font-size: 1.5rem;
+        }
+        h3 {
+            margin-top: 20px;
+            font-size: 1.2rem;
+        }
+        .seat-row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        /* Button Styling */
+        button {
+            background-color: #e66b00; /* Sky blue */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #005bb5; /* Darker blue on hover */
+            transform: scale(1.05);
+        }
+
+        button:disabled {
+            background-color: #ccc; /* Gray color for disabled state */
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<header>
+    <h1>Select your seat</h1>
+  </header>
+  <form action="payment.html" method="post">
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="time.html">Book Now</a>
+  </nav>
+<body>
+    <h2>Flight Seat Booking</h2>
+    <p>Click on a seat to select it. Each seat costs 4800</p>
+    <div class="seats-container" id="seatsContainer"></div>
+    <h3>Total Price: $<span id="totalPrice">0</span></h3>
+    <button id="nextPageButton" disabled>proceed to payment</button>
+
+    <script>
+        const seatContainer = document.getElementById("seatsContainer");
+        const totalPriceElement = document.getElementById("totalPrice");
+        const nextPageButton = document.getElementById("nextPageButton");
+        const seatPrice = 4800;
+        let selectedSeats = 0;
+        let seatNumber = 1; // Start seat numbering from 1
+
+        // Create 7 rows and 4 columns, with the 3rd column being empty
+        for (let row = 1; row <= 7; row++) {
+            for (let col = 1; col <= 4; col++) {
+                const seat = document.createElement("div");
+
+                // Skip creating seat for the 3rd column (empty column)
+                if (col === 3) {
+                    seat.classList.add("empty");
+                } else {
+                    seat.classList.add("seat");
+                    seat.textContent = seatNumber; // Assign seat number
+                    seatNumber++; // Increment seat number
+
+                    seat.addEventListener("click", function () {
+                        if (!seat.classList.contains("occupied") && !seat.classList.contains("empty")) {
+                            seat.classList.toggle("selected");
+                            selectedSeats = document.querySelectorAll(".seat.selected").length;
+                            totalPriceElement.textContent = selectedSeats * seatPrice;
+                            
+                            // Enable the button only if at least one seat is selected
+                            nextPageButton.disabled = selectedSeats === 0;
+                        }
+                    });
+                }
+                seatContainer.appendChild(seat);
+            }
+        }
+
+        // Redirect to the next page when the button is clicked
+        nextPageButton.addEventListener("click", function () {
+            window.location.href = "checkout.html"; // Change this to your desired page
+        });
+    </script>
+
+</body> 
+</html>

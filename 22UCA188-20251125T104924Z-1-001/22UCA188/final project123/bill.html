@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Bill</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> <!-- jsPDF Library -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 50px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            margin: auto;
+        }
+        h2 {
+            color: #333;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #28a745;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+        .home-btn {
+            background-color: #007bff;
+        }
+        .home-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Flight Booking Successful!</h2>
+        <p>Thank you for booking your flight with us.</p>
+        
+        <!-- Download Bill Button -->
+        <button class="btn" onclick="generatePDF()">Download Bill</button>
+        
+        <!-- Go to Home Button -->
+        <button class="btn home-btn" onclick="goHome()">Go to Home</button>
+    </div>
+
+    <script>
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Add heading
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(20);
+            doc.text("Flight Ticket", 80, 20);
+
+            // Ticket Details
+            doc.setFontSize(14);
+            doc.setFont("helvetica", "normal");
+            doc.text("Passenger Name: John Doe", 20, 40);
+            doc.text("Flight Number: XYZ123", 20, 50);
+            doc.text("Departure: New York (JFK)", 20, 60);
+            doc.text("Destination: Los Angeles (LAX)", 20, 70);
+            doc.text("Date: March 25, 2025", 20, 80);
+            doc.text("Time: 10:30 AM", 20, 90);
+            doc.text("Seat: 12A", 20, 100);
+            doc.text("Gate: B5", 20, 110);
+            doc.text("Price: $350.00", 20, 120);
+
+            // Save and trigger download
+            doc.save("Flight_Ticket.pdf");
+        }
+
+        function goHome() {
+            window.location.href = "index.html"; // Redirects to home page
+        }
+    </script>
+
+</body>
+</html>

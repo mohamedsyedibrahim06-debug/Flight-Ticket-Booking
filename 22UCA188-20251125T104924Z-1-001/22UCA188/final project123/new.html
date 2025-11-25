@@ -1,0 +1,570 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Seat Selection & Payment</title>
+    <style>
+   /* General styles */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f4f8; /* Light gray-blue background */
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  background-color: #0073e6; /* Sky blue */
+  color: white;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+}
+
+nav {
+  background-color: #003366; /* Deep blue (navy) */
+  overflow: hidden;
+  font-size: 1.1rem;
+}
+
+nav a {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 16px 20px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+}
+
+nav a:hover {
+  background-color: #ffcc00; /* Yellow (airport caution vibe) */
+  color: #003366; /* Deep blue for contrast */
+  transform: scale(1.05);
+}
+
+/* Container for the content */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  background-color: #ffffff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-top: 20px;
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 1200px; /* Set max width for better readability */
+  width: 100%;
+}
+
+/* Aligning the seat layout */
+.bus-layout {
+  display: grid;
+  grid-template-columns: 1fr 0.1fr 1fr; /* Left seats, aisle, right seats */
+  grid-gap: 10px;
+  margin-bottom: 20px;
+  justify-items: center;
+}
+
+.seat-group-left, .seat-group-right {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.aisle {
+  align-self: stretch;
+  width: 20px;
+  background-color: #ddd;
+}
+
+/* Seat styles */
+.seat {
+  padding: 15px;
+  background-color: #4CAF50; /* Green seat */
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.seat.selected {
+  background-color: #ff9800; /* Selected seat color */
+}
+
+.seat.available:hover {
+  background-color: #45a049; /* Hover effect for available seats */
+}
+
+.seat-group-left, .seat-group-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Summary Section */
+.summary {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.summary p {
+  font-size: 1.2rem;
+}
+
+button {
+  background-color: #ffcc00; /* Yellow button */
+  color: #003366; /* Deep blue text */
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #ff9800; /* Darker orange for hover effect */
+  transform: scale(1.05);
+}
+
+/* Payment Section */
+.payment-section {
+  display: none;
+  padding: 30px;
+  background-color: #f4f4f9;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+  margin: auto;
+  text-align: center;
+}
+
+.payment-method {
+  margin-top: 10px;
+}
+
+.payment-method label {
+  margin-left: 10px;
+}
+
+/* Input fields for payment */
+.payment-form input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.payment-form input.dynamic {
+  display: none;
+}
+
+input[type="text"], input[type="email"], select, input[type="tel"] {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, select:focus {
+  border-color: #0073e6;
+  outline: none;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  background-color: #004d99;
+  color: white;
+  padding: 20px 0;
+  font-size: 14px;
+}
+
+footer a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Aligning the details box and button */
+.details-box {
+  text-align: left;
+  margin-top: 20px;
+}
+
+.details-box p {
+  font-size: 1.2rem;
+}
+
+#print-btn {
+  margin-top: 20px;
+  background-color: #0073e6;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+#print-btn:hover {
+  background-color: #005bb5;
+}
+
+/* Popup */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 999;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+</style>
+    <!-- Include jsPDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    </head>
+    <body>
+    <div class="container">
+        <h1 id="page-title">Bus Seat Selection</h1>
+        <div class="bus-layout">
+        <div class="driver-seat">Driver</div>
+        <div class="row">
+            <div class="seat-group-left">
+            <div class="seat available" data-seat="A1">A1</div>
+            <div class="seat available" data-seat="A2">A2</div>
+            </div>
+            <div class="aisle"></div>
+            <div class="seat-group-right">
+            <div class="seat available" data-seat="A3">A3</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="seat-group-left">
+            <div class="seat available" data-seat="B1">B1</div>
+            <div class="seat available" data-seat="B2">B2</div>
+            </div>
+            <div class="aisle"></div>
+            <div class="seat-group-right">
+            <div class="seat available" data-seat="B3">B3</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="seat-group-left">
+            <div class="seat available" data-seat="C1">C1</div>
+            <div class="seat available" data-seat="C2">C2</div>
+            </div>
+            <div class="aisle"></div>
+            <div class="seat-group-right">
+            <div class="seat available" data-seat="C3">C3</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="seat-group-left">
+            <div class="seat available" data-seat="D1">D1</div>
+            <div class="seat available" data-seat="D2">D2</div>
+            </div>
+            <div class="aisle"></div>
+            <div class="seat-group-right">
+            <div class="seat available" data-seat="D3">D3</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="seat-group-left">
+            <div class="seat available" data-seat="E1">E1</div>
+            <div class="seat available" data-seat="E2">E2</div>
+            </div>
+            <div class="aisle"></div>
+            <div class="seat-group-right">
+            <div class="seat available" data-seat="E3">E3</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="seat-group-left">
+            <div class="seat available" data-seat="F1">F1</div>
+            <div class="seat available" data-seat="F2">F2</div>
+            </div>
+            <div class="aisle"></div>
+            <div class="seat-group-right">
+            <div class="seat available" data-seat="F3">F3</div>
+            </div>
+        </div>
+        </div>
+        <div class="summary">
+        <h2>Summary</h2>
+        <p>Selected Seats: <span id="selected-seats">None</span></p>
+        <p>Total Fare: ₹<span id="total-fare">0</span></p>
+        <button id="proceed-btn" disabled>Proceed to Payment</button>
+        </div>
+
+        <div class="payment-section" id="payment-section" style="display: none;">
+        <h2>Payment</h2>
+        <p>Selected Seats: <span id="payment-selected-seats"></span></p>
+        <p>Total Fare: ₹<span id="payment-total-fare"></span></p>
+
+        <div class="user-info">
+            <input type="text" id="user-name" placeholder="Enter your name" required />
+            <input type="tel" id="user-mobile" placeholder="Enter your mobile number" required />
+            <input type="email" id="user-email" placeholder="Enter your email" required />
+            <input type="text" id="user-address" placeholder="Enter your address" required />
+            <input type="text" id="user-departure" placeholder="Enter your departure place" required />
+            <input type="text" id="user-arrival" placeholder="Enter your arrival place" required />
+        </div>
+
+        <div class="payment-methods">
+            <div class="payment-method">
+            <input type="radio" name="payment-method" id="gpay" />
+            <img src="image1.png" alt="Google Pay" />
+            <label for="gpay">Google Pay</label>
+            </div>
+            <div class="payment-method">
+            <input type="radio" name="payment-method" id="paypal" />
+            <img src="image2.png" alt="PayPal" />
+            <label for="paypal">PayPal</label>
+            </div>
+            <div class="payment-method">
+            <input type="radio" name="payment-method" id="credit-card" />
+            <img src="image3.png" alt="Credit Card" />
+            <label for="credit-card">Credit Card</label>
+            </div>
+        </div>
+
+        <div class="payment-form">
+            <input type="text" id="gpay-mobile" class="dynamic" placeholder="Enter your Google Pay mobile number" />
+            <input type="email" id="paypal-email" class="dynamic" placeholder="Enter your PayPal email" />
+            <input type="text" id="card-number" class="dynamic" placeholder="Enter your card number" />
+            <input type="text" id="expiry-date" class="dynamic" placeholder="Expiry Date (MM/YY)" />
+            <input type="text" id="cvv" class="dynamic" placeholder="CVV" />
+        </div>
+
+        <button id="pay-now-btn" disabled>Pay Now</button>
+        </div>
+
+        <!-- Entered Details Box (Visible after payment) -->
+        <div id="details-box" class="details-box" style="display: none;">
+        <h2>Billing Address</h2>
+        <p><strong>Name:</strong> <span id="popup-name"></span></p>
+        <p><strong>Mobile:</strong> <span id="popup-mobile"></span></p>
+        <p><strong>Email:</strong> <span id="popup-email"></span></p>
+        <p><strong>Address:</strong> <span id="popup-address"></span></p>
+        <p><strong>Departure:</strong> <span id="popup-departure"></span></p>
+        <p><strong>Arrival:</strong> <span id="popup-arrival"></span></p>
+        <p><strong>Selected Seats:</strong> <span id="popup-seats"></span></p>
+        <p><strong>Total Fare:</strong> ₹<span id="popup-fare"></span></p>
+        <!-- Add Print Button -->
+        <button id="print-btn">Download as PDF</button>
+        </div>
+    </div>
+
+    <!-- Popup for Booking Success -->
+    <div id="booking-popup" class="popup">
+        <div class="popup-content">
+        <span class="close" id="close-popup">&times;</span>
+        <h2>Booking Successful!</h2>
+        <p>Your booking was successful. Thank you for your payment!</p>
+        </div>
+    </div>
+
+    <script>
+        const seatElements = document.querySelectorAll('.seat.available');
+        const selectedSeatsDisplay = document.getElementById('selected-seats');
+        const totalFareDisplay = document.getElementById('total-fare');
+        const proceedButton = document.getElementById('proceed-btn');
+        const paymentSection = document.getElementById('payment-section');
+        const paymentSelectedSeats = document.getElementById('payment-selected-seats');
+        const paymentTotalFare = document.getElementById('payment-total-fare');
+
+        let selectedSeats = [];
+        const farePerSeat = 100;
+
+        // Payment Form Fields
+        const gpayMobileInput = document.getElementById('gpay-mobile');
+        const paypalEmailInput = document.getElementById('paypal-email');
+        const cardNumberInput = document.getElementById('card-number');
+        const expiryDateInput = document.getElementById('expiry-date');
+        const cvvInput = document.getElementById('cvv');
+
+        const gpayRadio = document.getElementById('gpay');
+        const paypalRadio = document.getElementById('paypal');
+        const creditCardRadio = document.getElementById('credit-card');
+        const payNowButton = document.getElementById('pay-now-btn');
+
+        // Popup
+        const popup = document.getElementById('booking-popup');
+        const closePopupButton = document.getElementById('close-popup');
+
+        // Print Button
+        const printButton = document.getElementById('print-btn');
+
+        seatElements.forEach(seat => {
+        seat.addEventListener('click', () => {
+            const seatId = seat.getAttribute('data-seat');
+            
+            if (selectedSeats.includes(seatId)) {
+            selectedSeats = selectedSeats.filter(id => id !== seatId);
+            seat.classList.remove('selected');
+            } else {
+            selectedSeats.push(seatId);
+            seat.classList.add('selected');
+            }
+            
+            updateSummary();
+        });
+        });
+
+        function updateSummary() {
+        if (selectedSeats.length > 0) {
+            selectedSeatsDisplay.textContent = selectedSeats.join(', ');
+            totalFareDisplay.textContent = selectedSeats.length * farePerSeat;
+            proceedButton.disabled = false;
+        } else {
+            selectedSeatsDisplay.textContent = 'None';
+            totalFareDisplay.textContent = '0';
+            proceedButton.disabled = true;
+        }
+        }
+
+        proceedButton.addEventListener('click', () => {
+        document.querySelector('.bus-layout').style.display = 'none';
+        document.querySelector('.summary').style.display = 'none';
+        document.getElementById('page-title').style.display = 'none'; // Hide the title
+        paymentSection.style.display = 'block';
+
+        paymentSelectedSeats.textContent = selectedSeats.join(', ');
+        paymentTotalFare.textContent = selectedSeats.length * farePerSeat;
+        });
+
+        function showPaymentFields() {
+        const allInputs = document.querySelectorAll('.payment-form input.dynamic');
+        allInputs.forEach(input => input.style.display = 'none');
+
+        if (gpayRadio.checked) {
+            gpayMobileInput.style.display = 'block';
+        } else if (paypalRadio.checked) {
+            paypalEmailInput.style.display = 'block';
+        } else if (creditCardRadio.checked) {
+            cardNumberInput.style.display = 'block';
+            expiryDateInput.style.display = 'block';
+            cvvInput.style.display = 'block';
+        }
+        }
+
+        function checkPaymentForm() {
+        const name = document.getElementById('user-name').value.trim();
+        const mobile = document.getElementById('user-mobile').value.trim();
+        const email = document.getElementById('user-email').value.trim();
+        const address = document.getElementById('user-address').value.trim();
+        const departure = document.getElementById('user-departure').value.trim();
+        const arrival = document.getElementById('user-arrival').value.trim();
+
+        const paymentMethodSelected = gpayRadio.checked || paypalRadio.checked || creditCardRadio.checked;
+
+        if (name && mobile && email && address && departure && arrival && paymentMethodSelected) {
+            payNowButton.disabled = false;
+        } else {
+            payNowButton.disabled = true;
+        }
+        }
+
+        gpayRadio.addEventListener('change', () => {
+        showPaymentFields();
+        checkPaymentForm();
+        });
+
+        paypalRadio.addEventListener('change', () => {
+        showPaymentFields();
+        checkPaymentForm();
+        });
+
+        creditCardRadio.addEventListener('change', () => {
+        showPaymentFields();
+        checkPaymentForm();
+        });
+
+        const userInfoInputs = document.querySelectorAll('.user-info input');
+        userInfoInputs.forEach(input => {
+        input.addEventListener('input', checkPaymentForm);
+        });
+
+        payNowButton.addEventListener('click', () => {
+        paymentSection.style.display = 'none';
+
+        // Show entered details in the details box
+        document.getElementById('popup-name').textContent = document.getElementById('user-name').value;
+        document.getElementById('popup-mobile').textContent = document.getElementById('user-mobile').value;
+        document.getElementById('popup-email').textContent = document.getElementById('user-email').value;
+        document.getElementById('popup-address').textContent = document.getElementById('user-address').value;
+        document.getElementById('popup-departure').textContent = document.getElementById('user-departure').value;
+        document.getElementById('popup-arrival').textContent = document.getElementById('user-arrival').value;
+        document.getElementById('popup-seats').textContent = selectedSeats.join(', ');
+        document.getElementById('popup-fare').textContent = selectedSeats.length * farePerSeat;
+
+        // Show the details box
+        document.getElementById('details-box').style.display = 'block';
+
+        // Show the success popup
+        popup.style.display = 'block';
+        });
+
+        closePopupButton.addEventListener('click', () => {
+        popup.style.display = 'none';
+        });
+
+        // Generate PDF
+        printButton.addEventListener('click', () => {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Get the content of the details box
+        const detailsBox = document.getElementById('details-box');
+        const content = detailsBox.innerText;
+
+        // Add content to PDF
+        doc.text(content, 10, 10);
+        doc.save('billing_address.pdf'); // Download the PDF
+        });
+    </script>
+    </body>
+    </html>

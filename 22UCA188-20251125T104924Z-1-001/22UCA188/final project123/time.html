@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Booking</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('bookimage01.jpg') no-repeat center center/cover;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: #46a1fd;
+            background: url('head25.jpg') ;
+            color: rgb(27, 27, 27);
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            font-size: 1rem;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+
+        nav {
+            background-color: #003366;
+            overflow: hidden;
+            font-size: 1.1rem;
+            width: 100%;
+            text-align: left;
+        }
+
+        nav a {
+            display: inline-block;
+            color: white;
+            padding: 16px 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        nav a:hover {
+            background-color: #ffcc00;
+            color: #003366;
+            transform: scale(1.05);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background-color: white;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus {
+            border-color: #0073e6;
+            outline: none;
+        }
+
+        button {
+            background-color: #ffcc00;
+            color: #003366;
+            padding: 12px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #ff9800;
+            transform: scale(1.05);
+        }
+
+        footer {
+            text-align: center;
+            background-color: #004d99;
+            color: white;
+            padding: 20px 0;
+            width: 100%;
+            font-size: 14px;
+            margin-top: 30px;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>BOOK NOW</h1>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>  
+</nav>
+
+<div class="container">
+    <h2>Book Your Flight</h2>
+    <form action="seat.html" method="post">
+        <!-- Departure City Dropdown -->
+        <select id="departureCity" required>
+            <option value="">Select Departure City</option>
+            <option value="new-york">New York</option>
+            <option value="los-angeles">Los Angeles</option>
+            <option value="chicago">Chicago</option>
+            <option value="houston">Houston</option>
+            <option value="miami">Miami</option>
+            <option value="">Select Arrival Country</option>
+            <option value="usa">United States</option>
+            <option value="canada">Canada</option>
+            <option value="uk">United Kingdom</option>
+            <option value="france">France</option>
+            <option value="germany">Germany</option>
+            <option value="italy">Italy</option>
+            <option value="spain">Spain</option>
+            <option value="japan">Japan</option>
+            <option value="china">China</option>
+            <option value="india">India</option>
+            <option value="australia">Australia</option>
+            <option value="brazil">Brazil</option>
+            <option value="mexico">Mexico</option>
+            <option value="south-africa">South Africa</option>
+            <option value="russia">Russia</option>
+            <option value="south-korea">South Korea</option>
+            <option value="thailand">Thailand</option>
+            <option value="turkey">Turkey</option>
+            <option value="uae">United Arab Emirates</option>
+            <option value="singapore">Singapore</option>
+        </select>
+
+        <!-- Arrival City Dropdown -->
+        <select id="arrivalCity" required>
+            <option value="">Select Arrival City</option>
+            <option value="london">London</option>
+            <option value="paris">Paris</option>
+            <option value="tokyo">Tokyo</option>
+            <option value="sydney">Sydney</option>
+            <option value="dubai">Dubai</option>
+            <option value="">Select Departure Country</option>
+            <option value="usa">United States</option>
+            <option value="canada">Canada</option>
+            <option value="uk">United Kingdom</option>
+            <option value="france">France</option>
+            <option value="germany">Germany</option>
+            <option value="italy">Italy</option>
+            <option value="spain">Spain</option>
+            <option value="japan">Japan</option>
+            <option value="china">China</option>
+            <option value="india">India</option>
+            <option value="australia">Australia</option>
+            <option value="brazil">Brazil</option>
+            <option value="mexico">Mexico</option>
+            <option value="south-africa">South Africa</option>
+            <option value="russia">Russia</option>
+            <option value="south-korea">South Korea</option>
+            <option value="thailand">Thailand</option>
+            <option value="turkey">Turkey</option>
+            <option value="uae">United Arab Emirates</option>
+            <option value="singapore">Singapore</option>
+        </select>
+
+        <!-- Date Input -->
+        <input type="date" required>
+
+        <!-- Passengers Input -->
+        <input type="number" placeholder="Passengers" required min="1">
+
+        <!-- Class Selection Dropdown -->
+        <select>
+            <option value="economy">Economy</option>
+            <option value="business">Business</option>
+            <option value="first">First Class</option>
+        </select>
+
+        <!-- Submit Button -->
+        <button type="submit">Next</button>
+    </form> 
+</div>
+
+<footer>
+    &copy; 2025 Flight Booking. All rights reserved. | <a href="contact.html">Contact Us</a>
+</footer>
+
+</body>
+</html>

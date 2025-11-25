@@ -1,0 +1,105 @@
+/* General styles */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f4f8; /* Light gray-blue background */
+  color: #333;
+}
+
+header {
+  
+  background-color: #0073e6; /* Sky blue */
+  color: rgba(255, 255, 255, 0.81);
+  background: url('head25.jpg') ;
+  padding: 1.5rem;
+  text-align: left;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+}
+
+nav {
+  background-color: #003366; /* Deep blue (navy) */
+  overflow: hidden;
+  font-size: 1.1rem;
+}
+
+nav a {
+  float: left;
+  display: block;
+  color: rgb(241, 245, 6);
+  text-align: center;
+  padding: 16px 20px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+}
+
+nav a:hover {
+  background-color: #ffcc00; /* Yellow (airport caution vibe) */
+  color: #003366; /* Deep blue for contrast */
+  transform: scale(1.05);
+}
+
+.container {
+  padding: 30px;
+  background-color: #ffffff; /* White background for content */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-top: 20px;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+footer {
+  text-align: center;
+  background-color: #004d99; /* Strong blue */
+  color: white;
+  padding: 20px 0;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  font-size: 14px;
+}
+
+footer a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Additional Styling for forms or buttons */
+button {
+  background-color: #ffcc00; /* Yellow button */
+  color: #003366; /* Deep blue text */
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #ff9800; /* Darker orange for hover effect */
+  transform: scale(1.05);
+}
+
+input[type="text"], input[type="email"], select {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, select:focus {
+  border-color: #0073e6; /* Blue border when focused */
+  outline: none;
+}

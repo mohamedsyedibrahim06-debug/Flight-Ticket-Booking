@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Ticket Booking - Payment Page</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            background-image: url('payment01.jpg'); 
+            color: #333;
+        }
+
+        header {
+            background-color: #0073e6;
+            background: url('head25.jpg') ;
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+        }
+        nav {
+          background-color: #003366; /* Deep blue (navy) */
+          overflow: hidden;
+          font-size: 1.1rem;
+        }
+    
+        nav a {
+          float: left;
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 16px 20px;
+          text-decoration: none;
+          font-weight: bold;
+          transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+        }
+    
+        nav a:hover {
+          background-color: #ffcc00; /* Yellow (airport caution vibe) */
+          color: #003366; /* Deep blue for contrast */
+          transform: scale(1.05);
+        }
+
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: green;
+            color: #003366;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #ff9800;
+        }
+
+        .note {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .gpay-button, .phonepe-button {
+            background-color: #0073e6;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .gpay-button:hover, .phonepe-button:hover {
+            background-color: #005bb5;
+        }
+    </style>
+</head>
+<body>
+    <body>
+        <header>
+          <h1>Payment</h1>
+        </header>
+      
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+          <a href="time.html">Book Now</a>
+          <a href="instruction.html">Instruction</a>
+        </nav>
+
+    <div class="container">
+        <h1>Flight Payment</h1>
+        <form id="paymentForm">
+            <div class="form-group">
+                <label for="departure">Departure Date</label>
+                <input type="date" id="departure" name="departureDate" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="fullName" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phoneNumber" placeholder="Enter your phone number" required>
+            </div>
+
+            <div class="form-group">
+                <label for="card-number">Card Number</label>
+                <input type="text" id="card-number" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+            </div>
+
+            <div class="form-group">
+                <label for="expiry">Expiry Date</label>
+                <input type="month" id="expiry" name="expiryDate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="cvv">CVV</label>
+                <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="3" required>
+            </div>
+
+            <input type="hidden" id="flight-number" name="flightNumber" value="AI2024" />
+
+            <button type="submit" class="btn">Pay Now</button>
+            <button type="button" class="gpay-button" id="gpayBtn">Pay with Google Pay</button>
+            <button type="button" class="phonepe-button" id="phonePeBtn">Pay with PhonePe</button>
+            <button type="button" class="btn download-btn" onclick="downloadBill()">Download Bill</button>
+        </form>
+        <p class="note">Your payment details are secure and encrypted.</p>
+    </div>
+
+    <script>
+        document.getElementById("paymentForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            setTimeout(() => {
+                alert("Payment Successful! You can now download your bill.");
+            }, 1500);
+        });
+
+        function downloadBill() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const flightNumber = document.getElementById("flight-number").value;
+            const departureDate = document.getElementById("departure").value;
+            const fullName = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const phoneNumber = document.getElementById("phone").value;
+            const cardNumber = document.getElementById("card-number").value.replace(/\s/g, "").slice(-4);
+
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(20);
+            doc.text("Flight Booking Invoice", 60, 20);
+
+            doc.setFontSize(14);
+            doc.setFont("helvetica", "normal");
+            doc.text(`Passenger Name: ${fullName}`, 20, 40);
+            doc.text(`Flight Number: ${flightNumber}`, 20, 50);
+            doc.text(`Departure Date: ${departureDate}`, 20, 60);
+            doc.text(`Email: ${email}`, 20, 70);
+            doc.text(`Phone: ${phoneNumber}`, 20, 80);
+            doc.text(`Card Used: **** **** **** ${cardNumber}`, 20, 90);
+            doc.text("Amount Paid: $350.00", 20, 100);
+
+            doc.save("Flight_Ticket_Bill.pdf");
+        }
+
+        document.getElementById("gpayBtn").addEventListener("click", function() {
+            alert("Redirecting to Google Pay...");
+            window.location.href = "https://pay.google.com/";
+        });
+
+        document.getElementById("phonePeBtn").addEventListener("click", function() {
+            alert("Redirecting to PhonePe...");
+            window.location.href = "https://www.phonepe.com/";
+        });
+    </script>
+
+</body>
+</html>
